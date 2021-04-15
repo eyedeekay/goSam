@@ -62,7 +62,7 @@ func TestCompositeClient(t *testing.T) {
 		}
 		defer resp.Body.Close()
 	}()
-	time.Sleep(time.Second * 15)
+//	time.Sleep(time.Second * 15)
 	go func() {
 		resp, err := client.Get("http://" + listener2.Addr().(i2pkeys.I2PAddr).Base32())
 		if err != nil {
@@ -70,7 +70,7 @@ func TestCompositeClient(t *testing.T) {
 		}
 		defer resp.Body.Close()
 	}()
-	time.Sleep(time.Second * 15)
+//	time.Sleep(time.Second * 15)
 	go func() {
 		resp, err := client.Get("http://" + listener3.Addr().(i2pkeys.I2PAddr).Base32())
 		if err != nil {

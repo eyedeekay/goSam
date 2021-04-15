@@ -52,7 +52,6 @@ func (c *Client) forward(client, conn net.Conn) {
 }
 
 func (c *Client) Resolve(ctx context.Context, name string) (context.Context, net.IP, error) {
-	//	if c.lastaddr == "invalid" || c.lastaddr != name {
 	client, err := c.DialContext(ctx, "", name)
 	if err != nil {
 		return ctx, nil, err
