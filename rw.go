@@ -36,6 +36,7 @@ Copy of testing/iotest Read- and WriteLogger, but using %q instead of %x for pri
 
 type writeLogger struct {
 	prefix string
+	debug  bool
 	w      io.Writer
 }
 
@@ -52,12 +53,13 @@ func (l *writeLogger) Write(p []byte) (n int, err error) {
 // NewWriteLogger returns a writer that behaves like w except
 // that it logs (using log.Printf) each write to standard error,
 // printing the prefix and the hexadecimal data written.
-func NewWriteLogger(prefix string, w io.Writer) io.Writer {
-	return &writeLogger{prefix, w}
+func NewWriteLogger(prefix string, debug bool, w io.Writer) io.Writer {
+	return &writeLogger{prefix, debug, w}
 }
 
 type readLogger struct {
 	prefix string
+	debug  bool
 	r      io.Reader
 }
 
@@ -74,8 +76,8 @@ func (l *readLogger) Read(p []byte) (n int, err error) {
 // NewReadLogger returns a reader that behaves like r except
 // that it logs (using log.Print) each read to standard error,
 // printing the prefix and the hexadecimal data written.
-func NewReadLogger(prefix string, r io.Reader) io.Reader {
-	return &readLogger{prefix, r}
+func NewReadLogger(prefix string, debug bool, r io.Reader) io.Reader {
+	return &readLogger{prefix, debug, r}
 }
 
 type readHexLogger struct {

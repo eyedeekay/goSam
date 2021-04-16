@@ -53,7 +53,7 @@ func (c *Client) DialContextFree(network, addr string) (net.Conn, error) {
 }
 
 func (c *Client) DialDatagramContextFree(addr string) (DatagramConn, error) {
-	return c.SamDGConn, nil
+	return c.SamConn, nil
 }
 
 func (c *Client) DialStreamingContextFree(addr string) (net.Conn, error) {

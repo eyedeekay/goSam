@@ -35,9 +35,9 @@ type RWC struct {
 	c io.Closer
 }
 
-func WrapRWC(c io.ReadWriteCloser) io.ReadWriteCloser {
-	rl := NewReadLogger("<", c)
-	wl := NewWriteLogger(">", c)
+func WrapRWC(c io.ReadWriteCloser, debug bool) io.ReadWriteCloser {
+	rl := NewReadLogger("<", debug, c)
+	wl := NewWriteLogger(">", debug, c)
 
 	return &RWC{
 		Reader: rl,

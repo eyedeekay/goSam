@@ -37,9 +37,7 @@ func (c *Client) ListenI2P(dest string) (net.Listener, error) {
 	}
 	c.destination = d
 
-	if c.debug {
-		c.SamConn = WrapConn(c.SamConn)
-	}
+	c.SamConn = WrapConn(c.SamConn, c.ID(), fmt.Sprintf("3.%d", c.sammax), c.debug)
 
 	return c, nil
 }

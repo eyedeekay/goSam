@@ -22,9 +22,9 @@ type Client struct {
 	fromport string
 	toport   string
 
-	SamConn   net.Conn
-	SamDGConn DatagramConn
-	rd        *bufio.Reader
+	SamConn *Conn //net.Conn
+	//SamDGConn DatagramConn
+	rd *bufio.Reader
 
 	sigType     string
 	destination string
@@ -171,10 +171,7 @@ func NewClientFromOptions(opts ...func(*Client) error) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	if c.debug {
-		conn = WrapConn(conn)
-	}
-	c.SamConn = conn
+	c.SamConn = WrapConn(conn, c.ID(), fmt.Sprintf("3.%d", c.sammax), c.debug)
 	c.rd = bufio.NewReader(conn)
 	return &c, c.hello()
 }

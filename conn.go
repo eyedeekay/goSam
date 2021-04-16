@@ -32,15 +32,22 @@ import (
 
 type Conn struct {
 	RWC
-	conn net.Conn
+	id      string
+	version string
+	conn    net.Conn
 }
 
-func WrapConn(c net.Conn) *Conn {
+var streamingConn net.Conn = Conn
+var datagramConn net.PacketConn = Conn
+
+func WrapConn(c net.Conn, id, version string, debug bool) *Conn {
 	wrap := Conn{
-		conn: c,
+		conn:    c,
+		id:      id,
+		version: version,
 	}
-	wrap.Reader = NewReadLogger("<", c)
-	wrap.Writer = NewWriteLogger(">", c)
+	wrap.Reader = NewReadLogger("<", debug, c)
+	wrap.Writer = NewWriteLogger(">", debug, c)
 	wrap.RWC.c = c
 	return &wrap
 }
@@ -51,6 +58,16 @@ func (c *Conn) LocalAddr() net.Addr {
 
 func (c *Conn) RemoteAddr() net.Addr {
 	return c.conn.RemoteAddr()
+}
+
+func (c *Conn) ReadFrom(b []byte) (int, net.Addr, error) {
+	return c.ReadFrom(b)
+}
+
+func (c *Conn) WriteTo(b []byte, addr net.Addr) (int, error) {
+	header := []byte(c.version + " " + c.id + " " + addr.String() + "\n")
+	msg := append(header, b...)
+	return c.WriteTo(msg, addr)
 }
 
 func (c *Conn) SetDeadline(t time.Time) error {
